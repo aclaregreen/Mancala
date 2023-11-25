@@ -18,6 +18,9 @@ public class UserProfile implements Serializable{
     public void setUserName(final String name){
         this.userName = name;
     }
+    public String getUserName(){
+        return userName;
+    }
     public void addKalahWin(){
         kalahWins += 1;
     }

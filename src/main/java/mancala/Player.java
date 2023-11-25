@@ -10,6 +10,9 @@ public class Player implements Serializable{
 
     public Player(){
     }
+    public Player(final String name){
+        this.user = name;
+    }
     public Player(final String name, UserProfile userProfile){
         this.user = name;
         this.profile = userProfile;
