@@ -6,11 +6,13 @@ public class Player implements Serializable{
     private String user;
     private Store playerStore;
     private UserProfile profile;
+    private static final long serialVersionUID = -8059249044666139320L;
 
     public Player(){
     }
-    public Player(final String name){
+    public Player(final String name, UserProfile userProfile){
         this.user = name;
+        this.profile = userProfile;
     }
     public Player(final String name, final Store store){
         this.user = name;

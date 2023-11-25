@@ -2,6 +2,7 @@ package mancala;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Represents a Mancala data structure for the Mancala game.
@@ -9,7 +10,7 @@ import java.util.List;
  * You may add methods if you need them.
  * Do not add game logic to this class
  */
-public class MancalaDataStructure {
+public class MancalaDataStructure implements Serializable{
     private final int PLAYER_ONE = 6;
     private final int PLAYER_TWO = 13;
     private  int START_STONES = 4;  //not final because we might want a different size board in the future
@@ -18,6 +19,7 @@ public class MancalaDataStructure {
     private int iteratorPos = 0;
     private int playerSkip = PLAYER_TWO;
     private int pitSkip = -1; // will never match the iteratorPos unless set specifically
+    private static final long serialVersionUID = 2072472459954587744L;
 
     
     /**

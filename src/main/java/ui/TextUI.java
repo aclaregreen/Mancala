@@ -8,12 +8,19 @@ import mancala.KalahRules;
 import mancala.MancalaDataStructure;
 import mancala.MancalaGame;
 import mancala.Player;
+import mancala.Saver;
+import java.util.ArrayList;
+import java.io.File;
+import java.util.List;
+import java.util.Arrays;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TextUI extends JFrame {
     private JButton[][] buttons; // Declare the array of buttons
+    private JButton[]   files;
     private JFrame frame;
     private JPanel panel;
     private GameRules rules;
@@ -22,8 +29,12 @@ public class TextUI extends JFrame {
     private Player player2;
     private int currentPlayer = 1;
     private MancalaDataStructure data;
+    private Saver saver = new Saver();
+    private ArrayList<String> saveFiles = new ArrayList<>();
+    private String file;
 
     public TextUI() {
+        loadSaveFiles();
         createWindow();
         mainMenuPanel();
     }
@@ -52,6 +63,7 @@ public class TextUI extends JFrame {
         panel.add(newGame);
         panel.add(loadGame);
         newGame.addActionListener(e -> startNewGame());
+        loadGame.addActionListener(e -> loadScreen());
         panel.revalidate();
         panel.repaint();
     }
@@ -74,6 +86,7 @@ public class TextUI extends JFrame {
         game = new MancalaGame();
         player1 = new Player("Player 1");
         player2 = new Player("Player 2");
+        currentPlayer = 1;
 
         game.setPlayers(player1, player2);
         game.setBoard(rules);
@@ -130,8 +143,9 @@ public class TextUI extends JFrame {
         JButton quit = new JButton("Quit");
         JButton save = new JButton("Save ");
         quit.setBounds(250,300,100,30);
-        save.setBounds(250,250,100,30);
+        save.setBounds(250,225,100,30);
         quit.addActionListener(e -> mainMenuPanel());
+        save.addActionListener(e -> saveGame());
         panel.add(quit);
         panel.add(save);
         panel.revalidate();
@@ -199,6 +213,100 @@ public class TextUI extends JFrame {
         game.setCurrentPlayer(player1);
         //data = rules.getDataStructure();
         displayBoard();
+    }
+    private void saveGame(){
+        //saver = new Saver();
+        JTextField textField = new JTextField(20);
+        textField.setBounds(225, 260, 150, 30);
+        panel.add(textField);
+        textField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // This method is called when Enter is pressed
+                String userInput = textField.getText();
+                saveFiles.add(userInput); // Add the input to the ArrayList
+                file = userInput;
+                makeSave();
+                //resultLabel.setText("Result: " + userInput);
+                textField.setText(""); // Clear the text field after processing
+            }
+        });
+        panel.revalidate();
+        panel.repaint();
+        //saveFilePath = "Test.txt";
+    }
+    private void makeSave(){
+        try {
+             saver.saveObject(game, file);
+         } catch (Exception e){
+             e.printStackTrace();
+         }
+    }
+    private void loadScreen(){
+        int x = 10;
+        int y = 10;
+        if (saveFiles.isEmpty()){
+            return;
+        }
+        panel.removeAll();
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(500, 25, 75, 30);
+        backButton.addActionListener(e -> mainMenuPanel());
+        panel.add(backButton);
+        files = new JButton [saveFiles.size()];
+        for (int i = 0; i < saveFiles.size(); i++){
+            final int index = i;
+            files[i] = new JButton(saveFiles.get(i));
+            files[i].setBounds(x, y, 100, 30);
+            files[i].addActionListener(e -> loadGame(index));
+            panel.add(files[i]);
+            y += 40;
+            if (y >= 350){
+                x += 110;
+                y = 10;
+            }
+        }
+        panel.revalidate();
+        panel.repaint();
+    }
+    private void loadGame(int index){
+        //game = new MancalaGame();
+        file = saveFiles.get(index);
+        System.out.println("THIOS IS THE FILE: " + file);
+        game = new MancalaGame();
+        try {
+            game = (MancalaGame) saver.loadObject(file);
+            rules = game.getBoard();
+            data = rules.getDataStructure();
+            if (game.getCurrentPlayer() == game.getPlayers().get(0)){
+                currentPlayer = 1;
+            } else {
+                currentPlayer = 2;
+            }
+            rules.registerPlayers(game.getPlayers().get(0), game.getPlayers().get(1));
+            rules.setPlayer(currentPlayer);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        displayBoard();
+    }
+    private void loadSaveFiles(){
+        File assetsFolder = new File("assets/");
+        if (assetsFolder.exists() && assetsFolder.isDirectory()) {
+            // List all files in the assets folder
+            File[] gamefiles = assetsFolder.listFiles();
+    
+            // Filter out only the files that match your criteria (e.g., file extension)
+            if (gamefiles != null) {
+                for (File fname : gamefiles) {
+                    //if (isSaveFile(fname)) {
+                        saveFiles.add(fname.getName());
+                    //}
+                }
+            }
+        } else {
+            System.err.println("Assets folder not found!");
+        }
     }
 
     public static void main(String[] args) {

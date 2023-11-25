@@ -1,6 +1,6 @@
 package mancala;
 
-public class KalahRules extends GameRules {
+public class KalahRules extends GameRules{
     
     @Override
     public int moveStones(final int startPit, final int playerNum) throws InvalidMoveException {

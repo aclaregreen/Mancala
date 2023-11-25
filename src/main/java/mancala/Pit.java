@@ -4,6 +4,7 @@ import java.io.Serializable;
 public class Pit implements Serializable, Countable{
 
     private int stoneCount;
+    private static final long serialVersionUID = -8581857526535546531L;
 
     public Pit(){
         stoneCount = 0;

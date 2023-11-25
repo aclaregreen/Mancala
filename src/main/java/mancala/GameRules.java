@@ -1,13 +1,14 @@
 package mancala;
-
+import java.io.Serializable;
 /**
  * Abstract class representing the rules of a Mancala game.
  * KalahRules and AyoRules will subclass this class.
  */
-public abstract class GameRules {
+public abstract class GameRules implements Serializable{
     private MancalaDataStructure gameBoard;
     private int currentPlayer = 1; // Player number (1 or 2)
     private MancalaGame game;
+    private static final long serialVersionUID = -3186782306362864552L;
     //private GameRules kalahGame = new KalahRules();
     private boolean extraTurn;
 
@@ -120,7 +121,7 @@ public abstract class GameRules {
         gameBoard.setUpPits();
         gameBoard.emptyStores();
     }
-    
+
     int whichPlayer(final int pitNum){
         int player;
         if (pitNum >= 1 && pitNum <= 6){

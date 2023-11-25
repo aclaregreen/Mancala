@@ -5,6 +5,7 @@ public class Store implements Serializable, Countable{
 
     private Player owner;
     private int stones;
+    private static final long serialVersionUID = -6319809619248777988L;
     public Store(){
 
     }

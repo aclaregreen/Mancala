@@ -5,7 +5,8 @@ import java.io.Serializable;
 
 public class MancalaGame implements Serializable{
 
-    private static long serialVersionUID = 1L;
+    //private static long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2713556366135635498L;
     private GameRules gameBoard;
     final private ArrayList<Player> players;
     private Player currentPlayer;
@@ -87,6 +88,9 @@ public class MancalaGame implements Serializable{
     }
     public void setBoard(final GameRules theBoard){
         this.gameBoard = theBoard;
+    }
+    public GameRules getBoard(){
+        return gameBoard;
     }
     public void setCurrentPlayer(final Player player){
         this.currentPlayer = player;
