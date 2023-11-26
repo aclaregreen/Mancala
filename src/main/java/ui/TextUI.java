@@ -66,12 +66,16 @@ public class TextUI extends JFrame {
         loadProfileFiles();
         JButton newGame = new JButton("Start New Game");
         JButton loadGame = new JButton("Load Game");
+        JButton loadFile = new JButton("View Player Profile");
         newGame.setBounds(225, 150, 150, 30);
         loadGame.setBounds(225, 200, 150, 30);
+        loadFile.setBounds(225, 250, 150, 30);
         panel.add(newGame);
         panel.add(loadGame);
+        panel.add(loadFile);
         newGame.addActionListener(e -> setUpPlayers());
         loadGame.addActionListener(e -> loadScreen());
+        loadFile.addActionListener(e -> viewProfilesPanel());
         panel.revalidate();
         panel.repaint();
     }
@@ -79,12 +83,16 @@ public class TextUI extends JFrame {
         panel.removeAll();
         JButton newPlayer = new JButton("New Player");
         JButton loadPlayer = new JButton("Load Player");
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(500, 25, 75, 30);
         newPlayer.setBounds(225, 150, 150, 30);
         loadPlayer.setBounds(225, 200, 150, 30);
         newPlayer.addActionListener(e -> newProfile());
         loadPlayer.addActionListener(e -> loadProfilesPanel());
+        backButton.addActionListener(e -> mainMenuPanel());
         panel.add(newPlayer);
         panel.add(loadPlayer);
+        panel.add(backButton);
         panel.revalidate();
         panel.repaint();
     }
@@ -92,10 +100,14 @@ public class TextUI extends JFrame {
         panel.removeAll();
         JLabel enterName = new JLabel("Enter name");
         JTextField nameField = new JTextField();
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(500, 25, 75, 30);
         enterName.setBounds(225, 150, 150, 30);
         nameField.setBounds(225, 200, 150, 30);
         panel.add(enterName);
         panel.add(nameField);
+        panel.add(backButton);
+        backButton.addActionListener(e -> setUpPlayers());
         nameField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,8 +130,8 @@ public class TextUI extends JFrame {
     private void saveProfiles(ArrayList<Player> players){
         try {
             for (int i = 0; i < players.size(); i++){
-                file = "players/" + players.get(i).getName();
-                saver.saveObject(players.get(i), file);
+                String fileName = "players/" + players.get(i).getName();
+                saver.saveObject(players.get(i), fileName);
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -128,29 +140,103 @@ public class TextUI extends JFrame {
     private void loadProfilesPanel(){
         int x = 10;
         int y = 10;
+        panel.removeAll();
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(500, 25, 75, 30);
+        backButton.addActionListener(e -> setUpPlayers());
+        panel.add(backButton);
         if (profileFiles.isEmpty()){
-            return;
+            JLabel noProfiles = new JLabel("There are no saved profiles");
+            noProfiles.setBounds(200, 150, 200, 50);
+            panel.add(noProfiles);
+        } else {
+            files = new JButton [profileFiles.size()];
+            for (int i = 0; i < profileFiles.size(); i++){
+                final int index = i;
+                files[i] = new JButton(profileFiles.get(i));
+                files[i].setBounds(x, y, 100, 30);
+                files[i].addActionListener(e -> loadProfile(index));
+                panel.add(files[i]);
+                y += 40;
+                if (y >= 350){
+                    x += 110;
+                    y = 10;
+                }
+            }
         }
+        panel.revalidate();
+        panel.repaint();
+    }
+    private void viewProfilesPanel(){
+        int x = 10;
+        int y = 10;
         panel.removeAll();
         JButton backButton = new JButton("Back");
         backButton.setBounds(500, 25, 75, 30);
         backButton.addActionListener(e -> mainMenuPanel());
         panel.add(backButton);
-        files = new JButton [profileFiles.size()];
-        for (int i = 0; i < profileFiles.size(); i++){
-            final int index = i;
-            files[i] = new JButton(profileFiles.get(i));
-            files[i].setBounds(x, y, 100, 30);
-            files[i].addActionListener(e -> loadProfile(index));
-            panel.add(files[i]);
-            y += 40;
-            if (y >= 350){
-                x += 110;
-                y = 10;
+        if (profileFiles.isEmpty()){
+            JLabel noProfiles = new JLabel("There are no saved profiles");
+            noProfiles.setBounds(200, 150, 200, 50);
+            panel.add(noProfiles);
+        } else {
+            files = new JButton [profileFiles.size()];
+            for (int i = 0; i < profileFiles.size(); i++){
+                final int index = i;
+                files[i] = new JButton(profileFiles.get(i));
+                files[i].setBounds(x, y, 100, 30);
+                files[i].addActionListener(e -> viewProfile(index));
+                panel.add(files[i]);
+                y += 40;
+                if (y >= 350){
+                    x += 110;
+                    y = 10;
+                }
             }
         }
         panel.revalidate();
         panel.repaint();
+    }
+    private void viewProfile(int index){
+        file = "players/" + profileFiles.get(index);
+        try {
+            int x = 50;
+            Player player = new Player();
+            player = (Player) saver.loadObject(file);
+            panel.removeAll();
+            JButton backButton = new JButton("Back");
+            backButton.setBounds(500, 25, 75, 30);
+            backButton.addActionListener(e -> viewProfilesPanel());
+            panel.add(backButton);
+            JLabel kalah = new JLabel("Kalah");
+            JLabel kalahPlayed = new JLabel("Played: " + (player.getProfile().getKalahPlayed()));
+            JLabel kalahWon = new JLabel("Won: " + (player.getProfile().getKalahWon()));
+            JLabel kalahLost = new JLabel("Lost: " + (player.getProfile().getKalahPlayed() - player.getProfile().getKalahWon()));
+            kalah.setBounds(x, 10, 100, 15);
+            kalahPlayed.setBounds(x, 30, 100, 15);
+            kalahWon.setBounds(x, 50, 100, 15);
+            kalahLost.setBounds(x, 70, 100, 15);
+            panel.add(kalah);
+            panel.add(kalahPlayed);
+            panel.add(kalahWon);
+            panel.add(kalahLost);
+            JLabel ayo = new JLabel("Ayo");
+            JLabel ayoPlayed = new JLabel("Played: " + (player.getProfile().getAyoPlayed()));
+            JLabel ayoWon = new JLabel("Won: " + (player.getProfile().getAyoWon()));
+            JLabel ayoLost = new JLabel("Lost: " + (player.getProfile().getAyoPlayed() - player.getProfile().getAyoWon()));
+            ayo.setBounds(x + 75, 10, 100, 15);
+            ayoPlayed.setBounds(x + 75, 30, 100, 15);
+            ayoWon.setBounds(x + 75, 50, 100, 15);
+            ayoLost.setBounds(x + 75, 70, 100, 15);
+            panel.add(ayo);
+            panel.add(ayoPlayed);
+            panel.add(ayoWon);
+            panel.add(ayoLost);
+            panel.revalidate();
+            panel.repaint();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
     private void loadProfile(int index){
         file = "players/" + profileFiles.get(index);
@@ -172,6 +258,7 @@ public class TextUI extends JFrame {
         if (playersFolder.exists() && playersFolder.isDirectory()){
             File[] playerFiles = playersFolder.listFiles();
             if (playerFiles != null){
+                profileFiles.clear();
                 for (File fname : playerFiles){
                     profileFiles.add(fname.getName());
                 }
@@ -213,11 +300,15 @@ public class TextUI extends JFrame {
         displayBoard();
     }
     private void newAyoGame(){
-        rules = new AyoRules(); 
+        rules = new AyoRules();
+        players.get(0).getProfile().addAyo();
+        players.get(1).getProfile().addAyo();
         setNewGame();
     }
     private void newKalahGame(){
         rules = new KalahRules();
+        players.get(0).getProfile().addKalah();
+        players.get(1).getProfile().addKalah();
         setNewGame();
     }
     private void displayBoard(){
@@ -292,15 +383,25 @@ public class TextUI extends JFrame {
     }
     private void endOfGame(){
         panel.removeAll();
+        loadProfileFiles();
         JButton playAgain = new JButton("Play Again");
         JButton menu = new JButton("Main Menu");
+        JButton loadFile = new JButton("View Player Profile");
         try {
             JLabel winner;
-            if (game.getWinner() == null){
+            Player champ = new Player();
+            champ = game.getWinner();
+            if (champ == null){
                 winner = new JLabel("Its a tie!");
             } else {
-                winner = new JLabel(game.getWinner().getName() + " wins!");
+                winner = new JLabel(champ.getName() + " wins!");
             }
+            if (rules instanceof KalahRules){
+                champ.getProfile().addKalahWin();
+            } else if (rules instanceof AyoRules){
+                champ.getProfile().addAyoWin();
+            }
+            saveProfiles(players);
             winner.setBounds(225, 50, 150, 30);
             panel.add(winner);
         } catch (Exception e){
@@ -308,10 +409,13 @@ public class TextUI extends JFrame {
         }
         playAgain.setBounds(225, 150, 150, 30);
         menu.setBounds(225, 200, 150, 30);
+        loadFile.setBounds(225, 250, 150, 30);
         playAgain.addActionListener(e -> playAgain());        
         menu.addActionListener(e -> mainMenuPanel());
+        loadFile.addActionListener(e -> viewProfilesPanel());
         panel.add(playAgain);
         panel.add(menu);
+        panel.add(loadFile);
         panel.revalidate();
         panel.repaint();
     }
@@ -359,25 +463,28 @@ public class TextUI extends JFrame {
     private void loadScreen(){
         int x = 10;
         int y = 10;
-        if (saveFiles.isEmpty()){
-            return;
-        }
         panel.removeAll();
         JButton backButton = new JButton("Back");
         backButton.setBounds(500, 25, 75, 30);
         backButton.addActionListener(e -> mainMenuPanel());
         panel.add(backButton);
-        files = new JButton [saveFiles.size()];
-        for (int i = 0; i < saveFiles.size(); i++){
-            final int index = i;
-            files[i] = new JButton(saveFiles.get(i));
-            files[i].setBounds(x, y, 100, 30);
-            files[i].addActionListener(e -> loadGame(index));
-            panel.add(files[i]);
-            y += 40;
-            if (y >= 350){
-                x += 110;
-                y = 10;
+        if (saveFiles.isEmpty()){
+            JLabel noFiles = new JLabel("There are no saved games");
+            noFiles.setBounds(200, 150, 200, 50);
+            panel.add(noFiles);
+        } else {
+            files = new JButton [saveFiles.size()];
+            for (int i = 0; i < saveFiles.size(); i++){
+                final int index = i;
+                files[i] = new JButton(saveFiles.get(i));
+                files[i].setBounds(x, y, 100, 30);
+                files[i].addActionListener(e -> loadGame(index));
+                panel.add(files[i]);
+                y += 40;
+                if (y >= 350){
+                    x += 110;
+                    y = 10;
+                }
             }
         }
         panel.revalidate();
@@ -411,6 +518,7 @@ public class TextUI extends JFrame {
     
             // Filter out only the files that match your criteria (e.g., file extension)
             if (gamefiles != null) {
+                saveFiles.clear();
                 for (File fname : gamefiles) {
                     //if (isSaveFile(fname)) {
                         saveFiles.add(fname.getName());

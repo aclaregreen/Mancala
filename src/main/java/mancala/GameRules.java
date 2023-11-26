@@ -139,11 +139,10 @@ public abstract class GameRules implements Serializable{
             start = 1;
             end = 7;
         } else {
-            start = 8;
+            start = 7;
             end = 13;
         }
         for (int i = start; i < end; i++){
-            //total += pits.get(i).getStoneCount();
             total += gameBoard.getNumStones(i);
         }
         return total;
