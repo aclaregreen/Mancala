@@ -18,11 +18,11 @@ public class KalahRules extends GameRules{
     }
     @Override
     public int distributeStones(final int startingPoint){
-        int player = whichPlayer(startingPoint);
+        final int player = whichPlayer(startingPoint);
         getDataStructure().setIterator(startingPoint, player, false);
         int currentIndex = getDataStructure().getIteratorPos();
         int stonesLeft = getDataStructure().removeStones(startingPoint);
-        int total = stonesLeft;
+        final int total = stonesLeft;
         while (stonesLeft != 0){
             getDataStructure().next().addStone();
             stonesLeft--;

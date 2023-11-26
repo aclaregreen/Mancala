@@ -106,6 +106,6 @@ public class MancalaGame implements Serializable{
     }
     @Override
     public String toString(){
-        return "Mancala game:\n";
+        return "Mancala game:\n" + gameBoard.toString();
     }
 }

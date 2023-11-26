@@ -149,7 +149,7 @@ public class TextUI extends JFrame {
                 saver.saveObject(players.get(i), fileName);
             }
         } catch (Exception e){
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "File Not Found", JOptionPane.ERROR_MESSAGE);
         }
     }
     private void loadProfilesPanel(){
@@ -250,7 +250,7 @@ public class TextUI extends JFrame {
             panel.revalidate();
             panel.repaint();
         } catch (Exception e){
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Player not Found", JOptionPane.ERROR_MESSAGE);
         }
     }
     private void loadProfile(int index){
@@ -265,7 +265,7 @@ public class TextUI extends JFrame {
                 setUpPlayers();
             }
         } catch (Exception e){
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Player not Found", JOptionPane.ERROR_MESSAGE);
         }
     }
     private void loadProfileFiles(){
@@ -279,7 +279,7 @@ public class TextUI extends JFrame {
                 }
             }
         } else {
-            System.err.println("Folder not found");
+            JOptionPane.showMessageDialog(frame, "Folder not found", "Load Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
     private void startNewGame() {
@@ -334,7 +334,6 @@ public class TextUI extends JFrame {
         if (isGameOver()){
             return;
         }
-        System.out.println("PLAYER: " + game.getCurrentPlayer());
         JLabel playerTurn = new JLabel(game.getCurrentPlayer().getName() + "'s turn");
         playerTurn.setBounds(300, 50, 100, 30);
         panel.add(playerTurn);
@@ -389,7 +388,8 @@ public class TextUI extends JFrame {
                 game.setCurrentPlayer(currentPlayer == 1 ? player1 : player2);
             }
         } catch (InvalidMoveException e){
-            e.printStackTrace();
+            //e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Invalid Move", JOptionPane.ERROR_MESSAGE);
         }
         displayBoard();
     }
@@ -427,7 +427,7 @@ public class TextUI extends JFrame {
             winner.setBounds(225, 50, 150, 30);
             panel.add(winner);
         } catch (Exception e){
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Game Not Over", JOptionPane.ERROR_MESSAGE);
         }
         playAgain.setBounds(225, 150, 150, 30);
         menu.setBounds(225, 200, 150, 30);
@@ -461,6 +461,7 @@ public class TextUI extends JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             file = selectedFile.getAbsolutePath();
+            System.out.println(file);
             makeSave();
         }
     }
@@ -468,7 +469,7 @@ public class TextUI extends JFrame {
         try {
              saver.saveObject(game, file);
          } catch (Exception e){
-             e.printStackTrace();
+             JOptionPane.showMessageDialog(frame, e.getMessage(), "Save Failed", JOptionPane.ERROR_MESSAGE);
          }
     }
     private void loadScreen(){
@@ -512,56 +513,23 @@ public class TextUI extends JFrame {
             player1 = players.get(0);
             player2 = players.get(1);
             rules = game.getBoard();
+
+        game.setBoard(rules);
+        rules.setPlayer(currentPlayer);
+        data = rules.getDataStructure();
             data = rules.getDataStructure();
             if (game.getCurrentPlayer() == game.getPlayers().get(0)){
                 currentPlayer = 1;
             } else {
                 currentPlayer = 2;
             }
-            rules.registerPlayers(game.getPlayers().get(0), game.getPlayers().get(1));
             rules.setPlayer(currentPlayer);
         } catch (Exception e){
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Load Failed", JOptionPane.ERROR_MESSAGE);
         }
-        System.out.println("THIS IS THE PLAYER: " + game.getCurrentPlayer().getName());
         displayBoard();
     }
-    // private void loadGame(int index) {
-    //     file = "games/" + saveFiles.get(index);
-    //     game = new MancalaGame();
-    //     try {
-    //         game = (MancalaGame) saver.loadObject(file);
-    //         System.out.println("PLAYER: " + game.getCurrentPlayer().getName());
-    //         rules = game.getBoard();
-    //         if (game.getCurrentPlayer() == game.getPlayers().get(0)){
-    //             currentPlayer = 1;
-    //         } else {
-    //             currentPlayer = 2;
-    //         }
-    
-    //         // // Ensure the correct type of rules is initialized
-    //         // if (rules instanceof AyoRules) {
-    //         //     rules = new AyoRules();
-    //         // } else if (rules instanceof KalahRules) {
-    //         //     rules = new KalahRules();
-    //         // } else {
-    //         //     // Handle other types of rules if necessary
-    //         // }
-    
-    //         data = rules.getDataStructure();
-    
-    //         // Register players with the rules
-    //         rules.registerPlayers(game.getPlayers().get(0), game.getPlayers().get(1));
-    
-    //         // Set the current player
-    
-    //         rules.setPlayer(currentPlayer);
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    //     displayBoard();
-    // }
-    
+   
     private void loadSaveFiles(){
         File assetsFolder = new File("assets/games/");
         if (assetsFolder.exists() && assetsFolder.isDirectory()) {
@@ -572,14 +540,11 @@ public class TextUI extends JFrame {
             if (gamefiles != null) {
                 saveFiles.clear();
                 for (File fname : gamefiles) {
-                    //if (isSaveFile(fname)) {
                         saveFiles.add(fname.getName());
-                        System.out.println("FILE:: " + fname.getName());
-                    //}
                 }
             }
         } else {
-            System.err.println("Assets folder not found!");
+            JOptionPane.showMessageDialog(frame, "Assets folder not found", "Load Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
 

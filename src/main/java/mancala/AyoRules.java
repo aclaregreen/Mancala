@@ -16,8 +16,8 @@ public class AyoRules extends GameRules{
         return getDataStructure().getStoreCount(playerNum) - initialStoreCount;
     }
     @Override
-    public int distributeStones(int startPit){
-        int player = whichPlayer(startPit);
+    public int distributeStones(final int startPit){
+        final int player = whichPlayer(startPit);
         getDataStructure().setIterator(startPit, player, true);
         int currentIndex = getDataStructure().getIteratorPos();
         int stonesLeft = getDataStructure().removeStones(startPit);
@@ -37,15 +37,15 @@ public class AyoRules extends GameRules{
         }
         if ((player == 1 && currentIndex >= 0 && currentIndex <= 5 || player == 2 && currentIndex >= 7 && currentIndex <= 12)
             && getDataStructure().getNumStones(getPitNum(currentIndex)) == 1 && getDataStructure().getNumStones(13 - getPitNum(currentIndex)) != 0){
-            int captureStones = captureStones(getPitNum(currentIndex));
+            final int captureStones = captureStones(getPitNum(currentIndex));
             getDataStructure().addToStore(player, captureStones);
             //total += captureStones;
         }
         return total;
     }
     @Override
-    public int captureStones(int stoppingPoint){
-        int oppositeIndex = 13 - stoppingPoint;
+    public int captureStones(final int stoppingPoint){
+        final int oppositeIndex = 13 - stoppingPoint;
         return getDataStructure().removeStones(oppositeIndex);
     }
 }

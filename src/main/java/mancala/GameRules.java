@@ -5,10 +5,11 @@ import java.io.Serializable;
  * KalahRules and AyoRules will subclass this class.
  */
 public abstract class GameRules implements Serializable{
-    private MancalaDataStructure gameBoard;
+    private final MancalaDataStructure gameBoard;
     private int currentPlayer = 1; // Player number (1 or 2)
-    private MancalaGame game;
     private static final long serialVersionUID = -3186782306362864552L;
+    private Store playerOneStore = new Store();
+    private Store playerTwoStore = new Store();
     //private GameRules kalahGame = new KalahRules();
     private boolean extraTurn;
 
@@ -26,7 +27,7 @@ public abstract class GameRules implements Serializable{
      * @param pitNum The number of the pit.
      * @return The number of stones in the pit.
      */
-    public int getNumStones(int pitNum) {
+    public int getNumStones(final int pitNum) {
         return gameBoard.getNumStones(pitNum);
     }
 
@@ -61,7 +62,7 @@ public abstract class GameRules implements Serializable{
      *
      * @param playerNum The player number (1 or 2).
      */
-    public void setPlayer(int playerNum) {
+    public void setPlayer(final int playerNum) {
         currentPlayer = playerNum;
     }
 
@@ -97,10 +98,8 @@ public abstract class GameRules implements Serializable{
      * @param one The first player.
      * @param two The second player.
      */
-    public void registerPlayers(Player one, Player two) {
+    public void registerPlayers(final Player one, final Player two) {
         // this method can be implemented in the abstract class.
-        Store playerOneStore = new Store();
-        Store playerTwoStore = new Store();
 
         playerOneStore.setOwner(one);
         playerTwoStore.setOwner(two);
@@ -123,7 +122,7 @@ public abstract class GameRules implements Serializable{
     }
 
     int whichPlayer(final int pitNum){
-        int player;
+    int player;
         if (pitNum >= 1 && pitNum <= 6){
             player = 1;
         } else {
@@ -163,6 +162,17 @@ public abstract class GameRules implements Serializable{
     @Override
     public String toString() {
         // Implement toString() method logic here.
-        return "";
+        StringBuilder board = new StringBuilder();
+        for (int i = 0; i < 14; i++){
+            if (i != 6 && i!= 13){
+                board.append(getDataStructure().getNumStones(i)).append("\t");
+            } else {
+                board.append("\n");
+            }
+        }
+        for (int i = 1; i < 3; i++){
+            board.append("Store: " + getDataStructure().getStoreCount(i+1)).append("\n");
+        }
+        return board.toString();
     }
 }
