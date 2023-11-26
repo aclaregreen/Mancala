@@ -46,13 +46,9 @@ public class MancalaGame implements Serializable{
             }
             playerOneTotal = players.get(0).getStoreCount();
             playerTwoTotal = players.get(1).getStoreCount();
-            System.out.println("P1: " + playerOneTotal);
-            System.out.println("P2: " + playerTwoTotal);
             if (playerOneTotal > playerTwoTotal){
-                System.out.println("PLAYER 1");
                 return players.get(0);
             } else if (playerOneTotal < playerTwoTotal){
-                System.out.println("PLAYER 2");
                 return players.get(1);
             } else {
                 return null;
@@ -71,13 +67,13 @@ public class MancalaGame implements Serializable{
         }
     }
     public int move(final int startPit) throws InvalidMoveException {
-        int totalStones;
-        int player;
-        totalStones = gameBoard.countSide(startPit);
         if (startPit >= 1 && startPit <= 6 && currentPlayer.equals(players.get(1))
             || startPit >= 7 && startPit <= 12 && currentPlayer.equals(players.get(0))) {
                 throw new InvalidMoveException("Invalid move");
-            }
+        }
+        int totalStones;
+        totalStones = gameBoard.countSide(startPit);
+        int player;
         if (startPit >= 1 && startPit <= 6){
             player = 1;
         } else {

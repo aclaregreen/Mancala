@@ -19,17 +19,21 @@ public class Store implements Serializable, Countable{
     public Player getOwner(){
         return owner;
     }
+    @Override
     public void addStone(){
         stones++;
     }
+    @Override
     public void addStones(final int amount){
         stones += amount;
     }
+    @Override
     public int removeStones(){
         final int totalStones = stones;
         stones = 0;
         return totalStones;
     }
+    @Override
     public int getStoneCount(){
         return stones;
     }

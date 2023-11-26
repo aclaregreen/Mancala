@@ -1,6 +1,8 @@
 package mancala;
 
 public class KalahRules extends GameRules{
+
+    private static final long serialVersionUID = -921347514665025959L;
     
     @Override
     public int moveStones(final int startPit, final int playerNum) throws InvalidMoveException {
@@ -35,7 +37,7 @@ public class KalahRules extends GameRules{
         }
         if ((player == 1 && currentIndex >= 0 && currentIndex <= 5 || player == 2 && currentIndex >= 7 && currentIndex <= 12)
             && getDataStructure().getNumStones(getPitNum(currentIndex)) == 1 && getDataStructure().getNumStones(13 - getPitNum(currentIndex)) != 0){
-            int captureStones = captureStones(getPitNum(currentIndex));
+            final int captureStones = captureStones(getPitNum(currentIndex));
             getDataStructure().addToStore(player, captureStones);
             //total += captureStones;
         }

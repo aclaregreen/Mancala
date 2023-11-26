@@ -9,26 +9,23 @@ import java.io.FileOutputStream;
 public class Saver{
 
     public static final String ASSETS_FOLDER = "assets/";
-    public void saveObject(Serializable toSave, String filename) throws IOException{
+    public void saveObject(final Serializable toSave, final String filename) throws IOException{
         //String filePath = ASSETS_FOLDER + filename;
-        String filePath = filename;
+        final String filePath = filename;
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))){
             oos.writeObject(toSave);
-            System.out.println("serialized: " + filePath);
         } catch (IOException e){
             e.printStackTrace();
         }
     }
-    public Serializable loadObject(String filename) throws IOException {
-        String filePath = ASSETS_FOLDER + filename;
+    public Serializable loadObject(final String filename) throws IOException {
+        final String filePath = ASSETS_FOLDER + filename;
     
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
-            Serializable loadedObject = (Serializable) ois.readObject();
-            System.out.println("Object loaded successfully.");
+            final Serializable loadedObject = (Serializable) ois.readObject();
             return loadedObject;
         }
         catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error loading object:");
             e.printStackTrace();
             return null;
         }

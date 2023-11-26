@@ -9,15 +9,19 @@ public class Pit implements Serializable, Countable{
     public Pit(){
         stoneCount = 0;
     }
+    @Override
     public void addStone(){
         stoneCount++;
     }
-    public void addStones(int num){
+    @Override
+    public void addStones(final int num){
         stoneCount += num;
     }
+    @Override
     public int getStoneCount(){
         return stoneCount;
     }
+    @Override
     public int removeStones(){
         final int totalStones = stoneCount;
         stoneCount = 0;

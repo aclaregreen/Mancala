@@ -2,6 +2,7 @@ package mancala;
 
 public class AyoRules extends GameRules{
 
+    private static final long serialVersionUID = 4651301351614241909L;    
     @Override
     public int moveStones(final int startPit, final int playerNum) throws InvalidMoveException {
         if (playerNum == 1 && startPit >= 7//(stores.get(0).getOwner() == player && startPit >= 7 //&& startPit <= 12

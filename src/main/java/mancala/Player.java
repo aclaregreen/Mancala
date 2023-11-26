@@ -14,7 +14,7 @@ public class Player implements Serializable{
     public Player(final String name){
         this.user = name;
     }
-    public Player(final String name, UserProfile userProfile){
+    public Player(final String name, final UserProfile userProfile){
         this.user = name;
         this.profile = userProfile;
     }
@@ -22,7 +22,7 @@ public class Player implements Serializable{
         this.user = name;
         this.playerStore = store;
     }
-    public void setProfile(UserProfile userProfile){
+    public void setProfile(final UserProfile userProfile){
         this.profile = userProfile;
     }
     public UserProfile getProfile(){

@@ -13,9 +13,9 @@ import java.io.Serializable;
 public class MancalaDataStructure implements Serializable{
     private final int PLAYER_ONE = 6;
     private final int PLAYER_TWO = 13;
-    private  int START_STONES = 4;  //not final because we might want a different size board in the future
+    private int START_STONES = 4;  //not final because we might want a different size board in the future
 
-    private List<Countable> data = new ArrayList<>();
+    private final List<Countable> data = new ArrayList<>();
     private int iteratorPos = 0;
     private int playerSkip = PLAYER_TWO;
     private int pitSkip = -1; // will never match the iteratorPos unless set specifically
@@ -27,7 +27,7 @@ public class MancalaDataStructure implements Serializable{
      * 
      * @param startStones The number of stones to place in pits at the start of the game. Default values is 4.
      */
-    public MancalaDataStructure(int startStones){
+    public MancalaDataStructure(final int startStones){
         START_STONES = startStones;
         for (int i = 0; i < PLAYER_ONE; i++) {
             data.add(new Pit());
@@ -55,8 +55,8 @@ public class MancalaDataStructure implements Serializable{
      * @param numToAdd The number of stones to add.
      * @return The current number of stones in the pit.
      */
-    public int addStones(int pitNum, int numToAdd) {
-        Countable pit = data.get(pitPos(pitNum));
+    public int addStones(final int pitNum, final int numToAdd) {
+        final Countable pit = data.get(pitPos(pitNum));
         pit.addStones(numToAdd);
         return pit.getStoneCount();
     }
@@ -67,8 +67,8 @@ public class MancalaDataStructure implements Serializable{
      * @param pitNum The number of the pit.
      * @return The number of stones removed.
      */
-    public int removeStones(int pitNum) {
-        Countable pit = data.get(pitPos(pitNum));
+    public int removeStones(final int pitNum) {
+        final Countable pit = data.get(pitPos(pitNum));
         return pit.removeStones();
     }
 
@@ -79,8 +79,8 @@ public class MancalaDataStructure implements Serializable{
      * @param numToAdd  The number of stones to add to the store.
      * @return The current number of stones in the store.
      */
-    public int addToStore(int playerNum, int numToAdd) {
-        Countable store = data.get(storePos(playerNum));
+    public int addToStore(final int playerNum, final int numToAdd) {
+        final Countable store = data.get(storePos(playerNum));
         store.addStones(numToAdd);
         return store.getStoneCount();
     }
@@ -91,8 +91,8 @@ public class MancalaDataStructure implements Serializable{
      * @param playerNum The player number (1 or 2).
      * @return The stone count in the player's store.
      */
-    public int getStoreCount(int playerNum) {
-        Countable store = data.get(storePos(playerNum));
+    public int getStoreCount(final int playerNum) {
+        final Countable store = data.get(storePos(playerNum));
         return store.getStoneCount();
     }
 
@@ -102,13 +102,13 @@ public class MancalaDataStructure implements Serializable{
      * @param pitNum The number of the pit.
      * @return The stone count in the pit.
      */
-    public int getNumStones(int pitNum) {
-        Countable pit = data.get(pitPos(pitNum));
+    public int getNumStones(final int pitNum) {
+        final Countable pit = data.get(pitPos(pitNum));
         return pit.getStoneCount();
     }    
 
     /*helper method to convert 1 based pit numbers into array positions*/
-    private int pitPos(int pitNum) {
+    private int pitPos(final int pitNum) {
         /*Runtime execeptions don't need to be declared and are
         automatically passed up the chain until caught. This can
         replace the PitNotFoundException*/
@@ -123,7 +123,7 @@ public class MancalaDataStructure implements Serializable{
     }
 
     /*helper method to convert player number to an array position*/
-    private int storePos(int playerNum) {
+    private int storePos(final int playerNum) {
         if(playerNum <1 || playerNum > 2){
             throw new RuntimeException("Invalid Player Position");
         }
@@ -166,7 +166,7 @@ public class MancalaDataStructure implements Serializable{
      * @param store     The store to set.
      * @param playerNum The player number (1 or 2).
      */
-    public void setStore(Countable store, int playerNum) {
+    public void setStore(final Countable store, final int playerNum) {
         data.set(storePos(playerNum), store);
     }
     /*helper method for wrapping the iterator around to the beginning again*/
@@ -183,7 +183,7 @@ public class MancalaDataStructure implements Serializable{
         }
     }
 
-    private void setSkipPlayer(int playerNum) {
+    private void setSkipPlayer(final int playerNum) {
         //sets the skip store to be the opposite player
         playerSkip = PLAYER_TWO;
         if (playerNum == 2) {
@@ -191,7 +191,7 @@ public class MancalaDataStructure implements Serializable{
         }
     }
 
-    private void setSkipPit(int pitNum) {
+    private void setSkipPit(final int pitNum) {
         pitSkip = pitPos(pitNum);
     }
 
@@ -202,7 +202,7 @@ public class MancalaDataStructure implements Serializable{
      * @param playerNum      The player number (1 or 2).
      * @param skipStartPit   Whether to skip the starting pit.
      */
-    public void setIterator(int startPos, int playerNum, boolean skipStartPit) {
+    public void setIterator(final int startPos, final int playerNum, final boolean skipStartPit) {
         iteratorPos = pitPos(startPos);
         setSkipPlayer(playerNum);
         if (skipStartPit) {

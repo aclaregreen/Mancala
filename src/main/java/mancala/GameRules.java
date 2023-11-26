@@ -8,8 +8,8 @@ public abstract class GameRules implements Serializable{
     private final MancalaDataStructure gameBoard;
     private int currentPlayer = 1; // Player number (1 or 2)
     private static final long serialVersionUID = -3186782306362864552L;
-    private Store playerOneStore = new Store();
-    private Store playerTwoStore = new Store();
+    private final Store playerOneStore = new Store();
+    private final Store playerTwoStore = new Store();
     //private GameRules kalahGame = new KalahRules();
     private boolean extraTurn;
 
@@ -162,7 +162,7 @@ public abstract class GameRules implements Serializable{
     @Override
     public String toString() {
         // Implement toString() method logic here.
-        StringBuilder board = new StringBuilder();
+        final StringBuilder board = new StringBuilder();
         for (int i = 0; i < 14; i++){
             if (i != 6 && i!= 13){
                 board.append(getDataStructure().getNumStones(i)).append("\t");
