@@ -8,6 +8,7 @@ public class UserProfile implements Serializable{
     private int numAyo;
     private int kalahWins;
     private int ayoWins;
+    private static final long serialVersionUID = -3995813209754125734L;
 
     public UserProfile(){
         numKalah = 0;

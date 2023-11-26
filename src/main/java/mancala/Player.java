@@ -6,7 +6,8 @@ public class Player implements Serializable{
     private String user;
     private Store playerStore;
     private UserProfile profile;
-    private static final long serialVersionUID = -8059249044666139320L;
+    //private static final long serialVersionUID = -8059249044666139320L;
+    private static final long serialVersionUID = 1642445488097259363L;
 
     public Player(){
     }

@@ -334,6 +334,7 @@ public class TextUI extends JFrame {
         if (isGameOver()){
             return;
         }
+        System.out.println("PLAYER: " + game.getCurrentPlayer());
         JLabel playerTurn = new JLabel(game.getCurrentPlayer().getName() + "'s turn");
         playerTurn.setBounds(300, 50, 100, 30);
         panel.add(playerTurn);
@@ -371,7 +372,6 @@ public class TextUI extends JFrame {
                 mainMenuPanel();
             }
         });
-        //quit.addActionListener(e -> mainMenuPanel());
         save.addActionListener(e -> saveGame());
         panel.add(quit);
         panel.add(save);
@@ -507,6 +507,10 @@ public class TextUI extends JFrame {
         game = new MancalaGame();
         try {
             game = (MancalaGame) saver.loadObject(file);
+            players.add(game.getPlayers().get(0));
+            players.add(game.getPlayers().get(1));
+            player1 = players.get(0);
+            player2 = players.get(1);
             rules = game.getBoard();
             data = rules.getDataStructure();
             if (game.getCurrentPlayer() == game.getPlayers().get(0)){
@@ -519,8 +523,45 @@ public class TextUI extends JFrame {
         } catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println("THIS IS THE PLAYER: " + game.getCurrentPlayer().getName());
         displayBoard();
     }
+    // private void loadGame(int index) {
+    //     file = "games/" + saveFiles.get(index);
+    //     game = new MancalaGame();
+    //     try {
+    //         game = (MancalaGame) saver.loadObject(file);
+    //         System.out.println("PLAYER: " + game.getCurrentPlayer().getName());
+    //         rules = game.getBoard();
+    //         if (game.getCurrentPlayer() == game.getPlayers().get(0)){
+    //             currentPlayer = 1;
+    //         } else {
+    //             currentPlayer = 2;
+    //         }
+    
+    //         // // Ensure the correct type of rules is initialized
+    //         // if (rules instanceof AyoRules) {
+    //         //     rules = new AyoRules();
+    //         // } else if (rules instanceof KalahRules) {
+    //         //     rules = new KalahRules();
+    //         // } else {
+    //         //     // Handle other types of rules if necessary
+    //         // }
+    
+    //         data = rules.getDataStructure();
+    
+    //         // Register players with the rules
+    //         rules.registerPlayers(game.getPlayers().get(0), game.getPlayers().get(1));
+    
+    //         // Set the current player
+    
+    //         rules.setPlayer(currentPlayer);
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    //     displayBoard();
+    // }
+    
     private void loadSaveFiles(){
         File assetsFolder = new File("assets/games/");
         if (assetsFolder.exists() && assetsFolder.isDirectory()) {
@@ -533,6 +574,7 @@ public class TextUI extends JFrame {
                 for (File fname : gamefiles) {
                     //if (isSaveFile(fname)) {
                         saveFiles.add(fname.getName());
+                        System.out.println("FILE:: " + fname.getName());
                     //}
                 }
             }
