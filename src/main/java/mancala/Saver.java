@@ -10,7 +10,8 @@ public class Saver{
 
     public static final String ASSETS_FOLDER = "assets/";
     public void saveObject(Serializable toSave, String filename) throws IOException{
-        String filePath = ASSETS_FOLDER + filename;
+        //String filePath = ASSETS_FOLDER + filename;
+        String filePath = filename;
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))){
             oos.writeObject(toSave);
             System.out.println("serialized: " + filePath);

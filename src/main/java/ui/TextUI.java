@@ -41,6 +41,7 @@ public class TextUI extends JFrame {
         loadSaveFiles();
         loadProfileFiles();
         createWindow();
+        createMenuBar(); //added
         mainMenuPanel();
     }
     private void createWindow(){
@@ -51,6 +52,20 @@ public class TextUI extends JFrame {
         frame.setSize(600, 400);
         frame.setVisible(true);
         createPanel();
+    }
+    //added menu bar
+    private void createMenuBar(){
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+
+        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.addActionListener(e -> System.exit(0));
+
+        fileMenu.add(exitMenuItem);
+        menuBar.add(fileMenu);
+
+        setJMenuBar(menuBar);
     }
     private void createPanel(){
         panel = new JPanel();
@@ -130,7 +145,7 @@ public class TextUI extends JFrame {
     private void saveProfiles(ArrayList<Player> players){
         try {
             for (int i = 0; i < players.size(); i++){
-                String fileName = "players/" + players.get(i).getName();
+                String fileName = "assets/players/" + players.get(i).getName();
                 saver.saveObject(players.get(i), fileName);
             }
         } catch (Exception e){
@@ -349,7 +364,14 @@ public class TextUI extends JFrame {
         JButton save = new JButton("Save ");
         quit.setBounds(250,300,100,30);
         save.setBounds(250,225,100,30);
-        quit.addActionListener(e -> mainMenuPanel());
+        quit.addActionListener(e -> { //added
+            int result = JOptionPane.showConfirmDialog(frame, "Are you sure you want to quit?",
+                    "Quit Confirmation", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                mainMenuPanel();
+            }
+        });
+        //quit.addActionListener(e -> mainMenuPanel());
         save.addActionListener(e -> saveGame());
         panel.add(quit);
         panel.add(save);
@@ -429,29 +451,18 @@ public class TextUI extends JFrame {
         currentPlayer = 1;
         rules.setPlayer(currentPlayer);
         game.setCurrentPlayer(player1);
-        //data = rules.getDataStructure();
         displayBoard();
     }
-    private void saveGame(){
-        //saver = new Saver();
-        JTextField textField = new JTextField(20);
-        textField.setBounds(225, 260, 150, 30);
-        panel.add(textField);
-        textField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // This method is called when Enter is pressed
-                String userInput = textField.getText();
-                saveFiles.add(userInput); // Add the input to the ArrayList
-                file = "games/" + userInput;
-                makeSave();
-                //resultLabel.setText("Result: " + userInput);
-                textField.setText(""); // Clear the text field after processing
-            }
-        });
-        panel.revalidate();
-        panel.repaint();
-        //saveFilePath = "Test.txt";
+
+    private void saveGame() {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showSaveDialog(frame);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            file = selectedFile.getAbsolutePath();
+            makeSave();
+        }
     }
     private void makeSave(){
         try {
