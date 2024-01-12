@@ -33,7 +33,7 @@ public class SaverTest {
 
         // Save the test object
         try {
-            saver.saveObject(originalObject, "assets/" + testFileName);
+            saver.saveObject(originalObject, testFileName);
         } catch (IOException e) {
             fail("Failed to save object: " + e.getMessage());
         }

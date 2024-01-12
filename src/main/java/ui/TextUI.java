@@ -13,12 +13,16 @@ import mancala.UserProfile;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Arrays;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import java.net.URL;
+
 
 public class TextUI extends JFrame {
     private JButton[][] buttons; // Declare the array of buttons
@@ -145,7 +149,8 @@ public class TextUI extends JFrame {
     private void saveProfiles(ArrayList<Player> players){
         try {
             for (int i = 0; i < players.size(); i++){
-                String fileName = "assets/players/" + players.get(i).getName();
+                //String fileName = "assets/players/" + players.get(i).getName();
+                String fileName = "players/" + players.get(i).getName();
                 saver.saveObject(players.get(i), fileName);
             }
         } catch (Exception e){
@@ -269,7 +274,12 @@ public class TextUI extends JFrame {
         }
     }
     private void loadProfileFiles(){
-        File playersFolder = new File("assets/players/");
+        // Inside your code where you need to access the 'assets' folder
+        //String assetsPath = new File("assets").getAbsolutePath();
+        //File playersFolder = new File(assetsPath, "players/");
+
+        File playersFolder = new File("../../assets/players/");
+        //File playersFolder = new File("assets/players/");
         if (playersFolder.exists() && playersFolder.isDirectory()){
             File[] playerFiles = playersFolder.listFiles();
             if (playerFiles != null){
@@ -282,6 +292,7 @@ public class TextUI extends JFrame {
             JOptionPane.showMessageDialog(frame, "Folder not found", "Load Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
+   
     private void startNewGame() {
         saveProfiles(players);
         SwingUtilities.invokeLater(() -> {
@@ -504,7 +515,7 @@ public class TextUI extends JFrame {
     }
     private void loadGame(int index){
         //game = new MancalaGame();
-        file = "games/" + saveFiles.get(index);
+        file = "../../assets/games/" + saveFiles.get(index);
         game = new MancalaGame();
         try {
             game = (MancalaGame) saver.loadObject(file);
@@ -529,9 +540,9 @@ public class TextUI extends JFrame {
         }
         displayBoard();
     }
-   
     private void loadSaveFiles(){
-        File assetsFolder = new File("assets/games/");
+        File assetsFolder = new File("../../assets/games/");
+        //File assetsFolder = new File("assets/games/");
         if (assetsFolder.exists() && assetsFolder.isDirectory()) {
             // List all files in the assets folder
             File[] gamefiles = assetsFolder.listFiles();

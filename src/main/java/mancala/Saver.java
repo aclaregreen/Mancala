@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 
 public class Saver{
 
-    public static final String ASSETS_FOLDER = "assets/";
+    //public static final String ASSETS_FOLDER = "assets/";
     public void saveObject(final Serializable toSave, final String filename) throws IOException{
         //String filePath = ASSETS_FOLDER + filename;
         final String filePath = filename;
@@ -19,7 +19,8 @@ public class Saver{
         }
     }
     public Serializable loadObject(final String filename) throws IOException {
-        final String filePath = ASSETS_FOLDER + filename;
+        final String filePath = filename;
+        //final String filePath = ASSETS_FOLDER + filename;
     
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
             final Serializable loadedObject = (Serializable) ois.readObject();
